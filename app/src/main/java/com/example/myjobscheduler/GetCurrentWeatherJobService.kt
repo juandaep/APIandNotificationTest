@@ -26,7 +26,7 @@ class GetCurrentWeatherJobService : JobService() {
         internal const val CITY = "Jakarta"
 
         // API Key
-        internal const val APP_ID = "6b14ba1c7c6c9960d4c4f54edb8d8773"
+        internal const val APP_ID = ""
     }
 
 
