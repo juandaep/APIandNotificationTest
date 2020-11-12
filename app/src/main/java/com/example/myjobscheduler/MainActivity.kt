@@ -42,9 +42,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val mServiceComponent = ComponentName(this, GetCurrentWeatherJobService::class.java)
 
         val builder = JobInfo.Builder(JOB_ID, mServiceComponent)
+
+        /*
+        Kondisi network,
+        NETWORK_TYPE_ANY, berarti tidak ada ketentuan tertentu
+        NETWORK_TYPE_UNMETERED, adalah network yang tidak dibatasi misalnya wifi
+        */
         builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+
+        /*Kondisi device, secara default sudah pada false
+        false, berarti device tidak perlu idle ketika job ke trigger
+        true, berarti device perlu dalam kondisi idle ketika job ke trigger
+        */
         builder.setRequiresDeviceIdle(false)
+
+        /*
+        Kondisi charging
+        false, berarti device tidak perlu di charge
+        true, berarti device perlu dicharge
+        */
         builder.setRequiresCharging(false)
+
+        /*
+        Periode interval sampai ke trigger
+        Dalam milisecond, 1000ms = 1detik
+        */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             builder.setPeriodic(900000) // 15 Menit
         } else {

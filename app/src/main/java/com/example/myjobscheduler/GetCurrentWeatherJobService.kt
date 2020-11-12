@@ -57,6 +57,10 @@ class GetCurrentWeatherJobService : JobService() {
                 try {
                     val responseObject = JSONObject(result)
 
+                    /*
+                    Angka 0 pada getJSONObject menunjukkan index ke-0
+                    Jika data yang ingin kita ambil ada lebih dari satu maka gunakanlah looping
+                    */
                     val currentWeather =
                         responseObject.getJSONArray("weather").getJSONObject(0).getString("main")
                     val description = responseObject.getJSONArray("weather").getJSONObject(0)
@@ -73,10 +77,12 @@ class GetCurrentWeatherJobService : JobService() {
                     showNotification(applicationContext, title, message, notifId)
 
                     Log.d(TAG, "onSuccess: Selesai...")
+                    // ketika proses selesai, maka perlu dipanggil jobFinished dengan parameter false;
                     jobFinished(job, false)
 
                 } catch (e: Exception) {
                     Log.d(TAG, "onSuccess: Gagal...")
+                    // ketika terjadi error, maka jobFinished diset dengan parameter true. Yang artinya job perlu di reschedule
                     jobFinished(job, true)
                     e.printStackTrace()
                 }
@@ -89,6 +95,7 @@ class GetCurrentWeatherJobService : JobService() {
                 error: Throwable?
             ) {
                 Log.d(TAG, "onFailure: Gagal...")
+                // ketika proses gagal, maka jobFinished diset dengan parameter true. Yang artinya job perlu di reschedule
                 jobFinished(job, true)
             }
         })
